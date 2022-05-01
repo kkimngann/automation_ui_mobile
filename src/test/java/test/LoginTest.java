@@ -4,29 +4,34 @@ import driver.DriverFactory;
 import driver.Platforms;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import models.pages.LoginPage;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import test_data.DataObjectBuilder;
+import test_data.models.LoginInfoData;
 import test_flows.authentication.LoginFlow;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LoginTest {
-    public static void main(String[] args) {
+
+    @Test(dataProvider = "loginInfoData")
+    public void testLogin(LoginInfoData loginInfoData){
         AppiumDriver<MobileElement> appiumDriver = DriverFactory.createDriver(Platforms.android);
-        Map<String, String> mapLoginInfo = new HashMap<>();
-        mapLoginInfo.put("ngan@", "12345678");
-        mapLoginInfo.put("ngan.nguyen@gmail.com", "1234");
-        mapLoginInfo.put("ngan.nguyen_2@gmail.com", "12345678");
-        try {
-            for (String email : mapLoginInfo.keySet()){
-                loginWithInfo(appiumDriver, email, mapLoginInfo.get(email));
-            }
-        }
-        catch (Exception e){
+        try{
+            String email = loginInfoData.getEmail();
+            String password = loginInfoData.getPassword();
+            loginWithInfo(appiumDriver, email, password);
+        }catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             appiumDriver.quit();
         }
+
+    }
+
+    @DataProvider
+    public LoginInfoData[] loginInfoData() {
+        String filePath = "/src/test/java/test_data/authentication/LoginInfo.json";
+        return DataObjectBuilder.buildDataObject(filePath, LoginInfoData[].class);
     }
 
     private static void loginWithInfo(AppiumDriver<MobileElement> appiumDriver, String email, String password) {
