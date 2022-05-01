@@ -8,7 +8,9 @@ import org.openqa.selenium.By;
 public class LoginComponent {
     private final AppiumDriver<MobileElement> appiumDriver;
     public final By emailInputElement = MobileBy.AccessibilityId("input-email");
+    public final By emailInputEmailErrMsgElement = MobileBy.xpath("//*[contains(@text, 'Please enter a valid email address')]");
     public final By passwordInputElement = MobileBy.AccessibilityId("input-password");
+    public final By emailInputPasswordErrMsgElement = MobileBy.xpath("//*[contains(@text, 'Please enter at least 8 characters')]");
     public final By loginBtnElement = MobileBy.AccessibilityId("button-LOGIN");
 
     public LoginComponent(AppiumDriver<MobileElement> appiumDriver) {
@@ -31,5 +33,11 @@ public class LoginComponent {
         this.appiumDriver.findElement(loginBtnElement).click();
     }
 
+    public String getEmailErrMsg(){
+        return this.appiumDriver.findElement(emailInputEmailErrMsgElement).getText().trim();
+    }
 
+    public String getPasswordErrMsg(){
+        return this.appiumDriver.findElement(emailInputPasswordErrMsgElement).getText().trim();
+    }
 }

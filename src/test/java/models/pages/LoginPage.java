@@ -3,6 +3,7 @@ package models.pages;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.components.LoginComponent;
+import models.components.LoginSuccessAlertComponent;
 import models.components.NavMenuComponent;
 
 
@@ -19,5 +20,9 @@ public class LoginPage {
 
     public NavMenuComponent navMenuComponent(){
         return new NavMenuComponent(this.appiumDriver);
+    }
+
+    public LoginSuccessAlertComponent loginSuccessAlertComponent(){
+        return new LoginSuccessAlertComponent(this.appiumDriver);
     }
 }
