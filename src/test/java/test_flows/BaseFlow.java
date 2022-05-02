@@ -2,6 +2,7 @@ package test_flows;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import models.components.NavMenuComponent;
 import models.pages.LoginPage;
 
 public class BaseFlow {
@@ -12,7 +13,12 @@ public class BaseFlow {
     }
 
     public void gotoLoginPage(){
-        LoginPage loginPage = new LoginPage(this.appiumDriver);
-        loginPage.navMenuComponent().selectLogin();
+        NavMenuComponent navMenuComponent = new NavMenuComponent(this.appiumDriver);
+        navMenuComponent.selectLogin();
+    }
+
+    public void gotoFormsPage(){
+        NavMenuComponent navMenuComponent = new NavMenuComponent(this.appiumDriver);
+        navMenuComponent.selectForms();
     }
 }

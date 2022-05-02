@@ -50,6 +50,7 @@ public class LoginFlow extends BaseFlow {
 
         if(isValidEmail && isValidPassword){
             verifyCorrectLoginInfo(loginSuccessAlertComponent);
+            loginPage.loginSuccessAlertComponent().clickOK();
         }
     }
 

@@ -10,8 +10,8 @@ public class NavMenuComponent {
     private final static By homeMenuElement = MobileBy.AccessibilityId("Home");
     private final static By webviewMenuElement = MobileBy.AccessibilityId("Webview");
     private final static By loginMenuElement = MobileBy.AccessibilityId("Login");
-    private final static By swipeMenuElement = MobileBy.AccessibilityId("Forms");
-    private final static By formsMenuElement = MobileBy.AccessibilityId("Swipe");
+    private final static By swipeMenuElement = MobileBy.AccessibilityId("Swipe");
+    private final static By formsMenuElement = MobileBy.AccessibilityId("Forms");
     private final static By dragMenuElement = MobileBy.AccessibilityId("Drag");
 
 

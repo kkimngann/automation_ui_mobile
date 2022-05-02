@@ -31,4 +31,8 @@ public class LoginSuccessAlertComponent {
     public String getTextAlertButtonOK(){
         return this.appiumDriver.findElement(this.alertButtonOKElement).getText();
     }
+
+    public void clickOK(){
+        this.appiumDriver.findElement(alertButtonOKElement).click();
+    }
 }
