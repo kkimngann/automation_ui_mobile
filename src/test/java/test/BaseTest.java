@@ -11,25 +11,39 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class BaseTest {
-    protected static AppiumDriver<MobileElement>  appiumDriver;
+    private static final List<DriverFactory> driverThreadPool = Collections.synchronizedList(new ArrayList<>());
+    private static ThreadLocal<DriverFactory> driverThread;
+    protected String udid;
+    protected String systemPort;
 
     @BeforeTest
-    public void initAppiumSession(){
-        this.appiumDriver = DriverFactory.createDriver(Platforms.android);
+    @Parameters({"udid", "systemPort"})
+    public void initAppiumSession(String udid,  String systemPort){
+        this.udid = udid;
+        this.systemPort = systemPort;
+        driverThread = ThreadLocal.withInitial(()->{
+            DriverFactory driverThread = new DriverFactory();
+            driverThreadPool.add(driverThread);
+            return driverThread;
+        });
     }
-    @AfterTest
+    protected AppiumDriver<MobileElement> getDriver() {
+        return driverThread.get().createDriver(Platforms.android, udid, systemPort);
+    }
+
+    @AfterTest(alwaysRun = true)
     public void endAppiumSession(){
-        this.appiumDriver.quit();
+        driverThread.get().quitAppiumSession();
     }
 
     @AfterMethod(description = "Capture screenshot if failed")
@@ -45,7 +59,7 @@ public class BaseTest {
             int sec = calendar.get(Calendar.SECOND);
             String dateTaken = year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
 
-            File screenshot = appiumDriver.getScreenshotAs(OutputType.FILE);
+            File screenshot = getDriver().getScreenshotAs(OutputType.FILE);
             String fileLocation = System.getProperty("user.dir").concat("/screenshots/").concat(dateTaken).concat("png");
             try {
                 FileUtils.copyFile(screenshot, new File(fileLocation));

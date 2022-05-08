@@ -12,7 +12,7 @@ public class FormsTest extends BaseTest {
 
     @Test(dataProvider = "formInputData")
     public void testFormInput(FormInputData testData){
-        FormsFlow formsFlow = new FormsFlow(appiumDriver);
+        FormsFlow formsFlow = new FormsFlow(getDriver());
         formsFlow.gotoFormsPage();
         formsFlow.fillForms(testData.getTextInput(), testData.getSelectOptionIndex());
         formsFlow.verifyFormsDisplay();

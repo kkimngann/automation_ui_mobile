@@ -18,19 +18,15 @@ public class LoginTest extends BaseTest {
     public void testLogin(LoginInfoData loginInfoData){
         String email = loginInfoData.getEmail();
         String password = loginInfoData.getPassword();
-        loginWithInfo(appiumDriver, email, password);
+        LoginFlow loginFlow = new LoginFlow(getDriver(), email, password);
+        loginFlow.gotoLoginPage();
+        loginFlow.login();
+        loginFlow.verifyLogin();
     }
 
     @DataProvider
     public LoginInfoData[] loginInfoData() {
         String filePath = "/src/test/java/test_data/authentication/LoginInfo.json";
         return DataObjectBuilder.buildDataObject(filePath, LoginInfoData[].class);
-    }
-
-    private static void loginWithInfo(AppiumDriver<MobileElement> appiumDriver, String email, String password) {
-        LoginFlow loginFlow = new LoginFlow(appiumDriver, email, password);
-        loginFlow.gotoLoginPage();
-        loginFlow.login();
-        loginFlow.verifyLogin();
     }
 }
